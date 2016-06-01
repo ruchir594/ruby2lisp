@@ -12,9 +12,16 @@ count=0
 
 def extract(i, lispfun)
   j=i
+  count=1
   #print lispfun[j]
-  while lispfun[j] != ')' do
+  while count != 0 do
     #print lispfun[j]
+    if lispfun[j] == '('
+      count=count+1
+    end
+    if lispfun[j] == ')'
+      count=count-1
+    end
     j=j+1
   end
   return j
@@ -47,6 +54,7 @@ while i < lispfun.length() do
     count=count+1
   end
   if count == 2
+    i=i+1
     j=extract(i, lispfun)
     #i=j
     #print i, " ", j, "\n"
