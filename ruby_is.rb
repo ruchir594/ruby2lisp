@@ -1,12 +1,12 @@
-def maxall(x )
-if nil == x[1] 
- 	 x[0] 
- else 
- 	 if x[0] >  maxall x[1] 
- 	 x[0] 
- else 
- 	 ["maxall", "x[1]"] 
- end 
- 
- end 
+def dfs(x )
+	 if null == x 
+ 	 	 return  nil 
+ 	 end 
+ 	 if atom == x 
+ 	 	 return  (cons x nil) 
+ 	 end 
+ 	 if consp == x 
+ 	 	 return  (nconc (dfs(car x)) (dfs(cdr x))) 
+ 	 end 
+ end
  

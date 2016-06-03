@@ -1,4 +1,6 @@
 #using all_blocks
+require './condhead.rb'
+
 def extract2(i, lispfun)
   j=i
   count=1
@@ -154,16 +156,26 @@ def get_if_blk(build_blocks, all_blocks)
     end
 end
 
+
+
+
 def consume(build_blocks, all_blocks)
   print "\n in consume \n"
   krieg=[]
   i=0
+  kk=[]
   while i<build_blocks.length
-    count=1
+    kk[1]=1
     if build_blocks[i][0] == "if"
-      kk= get_if_blk(build_blocks, all_blocks)
+      kk = get_if_blk(build_blocks, all_blocks)
       #print "\n #{kk} \n #{count}"
       krieg.push(kk[0])
+    end
+    if build_blocks[i][0] == "cond"
+      print "\n in the cond block"
+      kk = get_cond_block(build_blocks, all_blocks)
+      krieg.concat kk[0]
+      krieg.push("end\n")
     end
     i=i+kk[1]
   end
