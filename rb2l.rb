@@ -50,6 +50,10 @@ all_blocks = hyperloop(i, lispfun)
 #write_block=convert(build_blocks)
 feel_block=consume(build_blocks, all_blocks)
 
+#print "\n ```````````` \n"
+#print build_blocks[4..-1]
+#print all_blocks[4]
+#print simplify(build_blocks[4..-1], all_blocks[4])
 #writing in File
 #write_words(write_block, aFile)
 write_words(feel_block, aFile)

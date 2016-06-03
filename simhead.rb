@@ -1,39 +1,32 @@
 #using all_blocks
+def extract2(i, lispfun)
+  j=i
+  count=1
+  cmax=1
+  #print lispfun[j]
+  while count != 0 do
+    #print lispfun[j], " ", count, "\n"
+    if lispfun[j] == '('
+      count=count+1
+    end
+    if count>cmax
+      cmax=count
+    end
+    if lispfun[j] == ')'
+      count=count-1
+    end
+    j=j+1
+  end
+  return j, cmax
+end
 
 def squash(a)
   if a.class == [].class && a.length() > 2
-    print "\n Too big to squash \n"
+    print "\n Too big to squash directly \n"
     return "#{a[0]} " + squash(a[1..-1])
   end
   if a[0] == "cdr"
     return "#{a[1]}[1]"
-    ######################### Following is the reason why
-    ######## (cdr x) will be x[1] and not x[1..-1]
-    ################################      ########
-          #$ irb
-      #2.1.2 :001 > x=[]
-      # => []
-      #2.1.2 :002 > x.class
-      # => Array
-      #2.1.2 :003 > x.push(1)
-      # => [1]
-      #2.1.2 :004 > x
-      # => [1]
-      #2.1.2 :005 > x[0]
-      # => 1
-      #2.1.2 :006 > x[1]
-      # => nil
-      #2.1.2 :007 > x[1..-1]
-      # => []
-      #2.1.2 :008 > if x[1..-1] == nil
-      #2.1.2 :009?>   print "lol"
-      #2.1.2 :010?>   end
-      # => nil
-      #2.1.2 :011 > if x[1] == nil
-      #2.1.2 :012?>   print "lol"
-      #2.1.2 :013?>   end
-      #lol => nil
-      #2.1.2 :014 >
   end
   if a[0] == "car"
     return "#{a[1]}[0]"
@@ -42,6 +35,56 @@ def squash(a)
     return "nil"
   end
   return a
+end
+
+def l_of(a)
+  i=0
+  b=0
+  while i < a.length
+    b=b+a[i].length
+    i=i+1
+    #print "\n \t b #{b}"
+  end
+  return b
+end
+
+def simplify(bb, ab)
+  i=1
+  opr=[]
+  count=0
+  ptr=1
+  iend=ab.length()
+  while i < iend
+    #print "\n #{i} \t #{ab[i]}"
+    if ab[i] == '('
+      j = extract2(i+1, ab)
+      gg = ab[i,j[0]-i]
+      #print "\n gg \t #{gg}"
+      pas = gg.split(/\W([><+-^\*\,\.\s]*)/)
+      pas = pas.reject { |c| c.empty? }
+      pas = pas.reject { |c| c==" "}
+      pas = squash(pas)
+      opr.push(pas)
+      i=j[0]
+      count=count+pas.length
+      ptr=ptr + j[1]
+    elsif ab[i] == ' '
+      i=i+1
+      next
+    elsif ab[i] == ')'
+      i=i+1
+      next
+    else
+      pas = squash(bb[0][count])
+      opr.push(pas)
+      i=i+bb[0][count].length
+      count=count+1
+    end
+    #print "\n printing opr #{i} \t"
+    #print opr
+  end
+
+  return opr
 end
 
 def get_if_blk(build_blocks, all_blocks)
@@ -72,8 +115,8 @@ def get_if_blk(build_blocks, all_blocks)
       opr_else=5+condition_rh_len-2
     end
 
-    return_if_bl = build_blocks[opr_if]
-    return_else_bl = build_blocks[opr_else]
+    return_if_bl = build_blocks[opr_if..-1]
+    return_else_bl = build_blocks[opr_else..-1]
     if condition_lh_len + condition_rh_len + return_if_bl.length() == block_len-1
       #lack of else block
       if return_if_bl[0] == "if"
@@ -81,7 +124,7 @@ def get_if_blk(build_blocks, all_blocks)
       end
       condition_lh = squash(condition_lh)
       condition_rh = squash(condition_rh)
-      return_if_bl = squash(return_if_bl)
+      return_if_bl = simplify(return_if_bl, all_blocks[opr_if])
       return "if #{condition_lh} #{condition_it} #{condition_rh} \n \t #{return_if_bl} \n end \n", 1
     else
       #else block is present
@@ -93,8 +136,8 @@ def get_if_blk(build_blocks, all_blocks)
       end
       condition_lh = squash(condition_lh)
       condition_rh = squash(condition_rh)
-      return_if_bl = squash(return_if_bl)
-      return_else_bl = squash(return_else_bl)
+      return_if_bl = simplify(return_if_bl, all_blocks[opr_if])
+      return_else_bl = simplify(return_else_bl, all_blocks[opr_else])
       return "if #{condition_lh} #{condition_it} #{condition_rh} \n \t #{return_if_bl} \n else \n \t #{return_else_bl} \n end \n", 1
     end
 end

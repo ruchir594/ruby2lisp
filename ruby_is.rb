@@ -1,7 +1,7 @@
 def revlist(x )
 if nil == x[1] 
- 	 x[0] 
+ 	 ["car", "x"] 
  else 
- 	 list revlist cdr x x[0] 
+ 	 ["list", "revlist x[1]", "x[0]"] 
  end 
  
