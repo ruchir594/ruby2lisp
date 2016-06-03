@@ -1,64 +1,4 @@
-def extract(i, lispfun)
-  j=i
-  count=1
-  #print lispfun[j]
-  while count != 0 do
-    #print lispfun[j], " ", count, "\n"
-    if lispfun[j] == '('
-      count=count+1
-    end
-    if lispfun[j] == ')'
-      count=count-1
-    end
-    j=j+1
-  end
-  return j
-end
-
-def write_words(parameters, aFile)
-  i=0
-  while i < parameters.length() do
-    aFile.syswrite(parameters[i])
-    aFile.syswrite(" ")
-    i=i+1
-  end
-end
-
-def superloop(i, lispfun)
-  a=[]
-  while i < lispfun.length() do
-    if lispfun[i] == '('
-      j=extract(i+1,lispfun)
-      parameters = lispfun[i,j-i+1].split(/\W([><+-^\*\,\.\s]*)/)
-      parameters = parameters.reject { |c| c.empty? }
-      parameters = parameters.reject { |c| c==" "}
-      print "\n","parameters",parameters
-      a.push(parameters)
-    end
-    i=i+1
-  end
-  print "\n"
-  #print a
-  print "\n"
-  return a
-end
-
-def hyperloop(i, lispfun)
-  a=[]
-  while i < lispfun.length() do
-    if lispfun[i] == '('
-      j=extract(i+1,lispfun)
-      parameters = lispfun[i,j-i]
-      print "\n","parameters",parameters
-      a.push(parameters)
-    end
-    i=i+1
-  end
-  print "\n"
-  #print a
-  print "\n"
-  return a
-end
+#using all_blocks
 
 def squash(a)
   if a.class == [].class && a.length() > 2
@@ -104,7 +44,7 @@ def squash(a)
   return a
 end
 
-def get_if_block(build_blocks)
+def get_if_blk(build_blocks, all_blocks)
   block_len=build_blocks[0].length()
   condition_len=build_blocks[1].length()
   #print "`````````\n",condition_len,"\n````````````"
@@ -132,50 +72,45 @@ def get_if_block(build_blocks)
       opr_else=5+condition_rh_len-2
     end
 
-    #print "`````````\n",condition_lh,"\n````````````"
-    #print "`````````\n",condition_rh,"\n````````````"
     return_if_bl = build_blocks[opr_if]
     return_else_bl = build_blocks[opr_else]
-    print condition_lh_len + condition_rh_len + return_if_bl.length(), "!!!!!!!", block_len,"!!!!!!!!!"
     if condition_lh_len + condition_rh_len + return_if_bl.length() == block_len-1
       #lack of else block
-      print "`````````\n","yaaayyyyyyy","\n````````````"
-      print "`````````\n","yaayyyy","\n````````````"
       if return_if_bl[0] == "if"
-        return_if_bl=get_if_block(build_blocks[opr_if..-1])
+        return_if_bl=get_if_blk(build_blocks[opr_if..-1], all_blocks[opr_if..-1])
       end
       condition_lh = squash(condition_lh)
       condition_rh = squash(condition_rh)
       return_if_bl = squash(return_if_bl)
-      return "if #{condition_lh} #{condition_it} #{condition_rh} \n \t #{return_if_bl} \n end \n"
+      return "if #{condition_lh} #{condition_it} #{condition_rh} \n \t #{return_if_bl} \n end \n", 1
     else
       #else block is present
-      print "`````````\n","naaayyyyyyy","\n````````````"
-      print "`````````\n","naayyyy","\n````````````"
       if return_if_bl[0] == "if"
-        return_if_bl = get_if_block(build_blocks[opr_if..-1])
+        return_if_bl = get_if_blk(build_blocks[opr_if..-1], all_blocks[opr_if..-1])
       end
       if return_else_bl[0] == "if"
-        print "`````````\n",return_else_bl,"\n````````````"
-        return_else_bl = get_if_block(build_blocks[opr_else..-1])
+        return_else_bl = get_if_blk(build_blocks[opr_else..-1], all_blocks[opr_else..-1])
       end
       condition_lh = squash(condition_lh)
       condition_rh = squash(condition_rh)
       return_if_bl = squash(return_if_bl)
       return_else_bl = squash(return_else_bl)
-      return "if #{condition_lh} #{condition_it} #{condition_rh} \n \t #{return_if_bl} \n else \n \t #{return_else_bl} \n end \n"
+      return "if #{condition_lh} #{condition_it} #{condition_rh} \n \t #{return_if_bl} \n else \n \t #{return_else_bl} \n end \n", 1
     end
 end
 
-def convert(build_blocks)
-  write_block=[]
+def consume(build_blocks, all_blocks)
+  print "\n in consume \n"
+  krieg=[]
   i=0
-  #while i<build_blocks.length() do
+  while i<build_blocks.length
+    count=1
     if build_blocks[i][0] == "if"
-      write_block.push(get_if_block(build_blocks))
-      i=i+1
+      kk, count = get_if_blk(build_blocks, all_blocks)
+      #print "\n #{kk} \n #{count}"
+      krieg.push(kk)
     end
-  #  i=i+1
-  #end
-  return write_block
+    i=i+count
+  end
+  return krieg
 end

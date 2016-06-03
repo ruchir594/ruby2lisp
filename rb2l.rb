@@ -12,6 +12,7 @@ i=0
 count=0
 
 require './rb2l_header.rb'
+require './simhead.rb'
 
 #Putting down parameters into the function name is what this while loop is for.
 
@@ -43,13 +44,15 @@ print i
 
 #it is time for writing body
 build_blocks = superloop(i, lispfun)
+all_blocks = hyperloop(i, lispfun)
 
 #Now, what I call, building blocks are stored in array
-write_block=convert(build_blocks)
+#write_block=convert(build_blocks)
+feel_block=consume(build_blocks, all_blocks)
 
 #writing in File
-write_words(write_block, aFile)
-
+#write_words(write_block, aFile)
+write_words(feel_block, aFile)
 
 #print "words  ", lispfun.split(/\W([><+-^\*\,\.\s]*)/), "\n"
 
