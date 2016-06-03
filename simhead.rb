@@ -23,7 +23,7 @@ end
 def squash(a)
   if a.class == [].class && a.length() > 2
     print "\n Too big to squash directly \n"
-    return "#{a[0]} " + squash(a[1..-1])
+    return "#{a[0]} " + "#{squash(a[1..-1])}"
   end
   if a[0] == "cdr"
     return "#{a[1]}[1]"
@@ -83,7 +83,7 @@ def simplify(bb, ab)
     #print "\n printing opr #{i} \t"
     #print opr
   end
-
+  opr=squash(opr)
   return opr
 end
 
@@ -119,26 +119,38 @@ def get_if_blk(build_blocks, all_blocks)
     return_else_bl = build_blocks[opr_else..-1]
     if condition_lh_len + condition_rh_len + return_if_bl.length() == block_len-1
       #lack of else block
-      if return_if_bl[0] == "if"
+      if return_if_bl[0][0] == "if"
         return_if_bl=get_if_blk(build_blocks[opr_if..-1], all_blocks[opr_if..-1])
       end
       condition_lh = squash(condition_lh)
       condition_rh = squash(condition_rh)
       return_if_bl = simplify(return_if_bl, all_blocks[opr_if])
-      return "if #{condition_lh} #{condition_it} #{condition_rh} \n \t #{return_if_bl} \n end \n", 1
+      #print "if #{condition_lh} #{condition_it} #{condition_rh} \n \t #{return_if_bl} \n end \n"
+      return "if #{condition_lh} #{condition_it} #{condition_rh} \n \t #{return_if_bl} \n end \n", 3
     else
       #else block is present
-      if return_if_bl[0] == "if"
+      flag_if_crunch=false
+      if return_if_bl[0][0] == "if"
         return_if_bl = get_if_blk(build_blocks[opr_if..-1], all_blocks[opr_if..-1])
+        return_if_bl=return_if_bl[0]
+        flag_if_crunch=true
       end
-      if return_else_bl[0] == "if"
+      flag_else_crunch=false
+      if return_else_bl[0][0] == "if"
         return_else_bl = get_if_blk(build_blocks[opr_else..-1], all_blocks[opr_else..-1])
+        return_else_bl=return_else_bl[0]
+        flag_else_crunch=true
       end
       condition_lh = squash(condition_lh)
       condition_rh = squash(condition_rh)
-      return_if_bl = simplify(return_if_bl, all_blocks[opr_if])
-      return_else_bl = simplify(return_else_bl, all_blocks[opr_else])
-      return "if #{condition_lh} #{condition_it} #{condition_rh} \n \t #{return_if_bl} \n else \n \t #{return_else_bl} \n end \n", 1
+      if flag_if_crunch == false
+        return_if_bl = simplify(return_if_bl, all_blocks[opr_if])
+      end
+      if flag_else_crunch == false
+        return_else_bl = simplify(return_else_bl, all_blocks[opr_else])
+      end
+
+      return "if #{condition_lh} #{condition_it} #{condition_rh} \n \t #{return_if_bl} \n else \n \t #{return_else_bl} \n end \n", 3
     end
 end
 
@@ -149,11 +161,11 @@ def consume(build_blocks, all_blocks)
   while i<build_blocks.length
     count=1
     if build_blocks[i][0] == "if"
-      kk, count = get_if_blk(build_blocks, all_blocks)
+      kk= get_if_blk(build_blocks, all_blocks)
       #print "\n #{kk} \n #{count}"
-      krieg.push(kk)
+      krieg.push(kk[0])
     end
-    i=i+count
+    i=i+kk[1]
   end
   return krieg
 end

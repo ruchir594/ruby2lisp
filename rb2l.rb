@@ -1,7 +1,7 @@
 print "Enter a valid lisp defun: \n"
 #lispfun=gets()
-#lispfun="(defun maxall (x)(if (null (cdr x)) (car x) (if (> (car x) (maxall (cdr x))) (car x) (maxall (cdr x)))))"
-lispfun="(defun revlist (x)(if (null (cdr x)) (car x) (list (revlist(cdr x)) (car x))))"
+lispfun="(defun maxall (x)(if (null (cdr x)) (car x) (if (> (car x) (maxall (cdr x))) (car x) (maxall (cdr x)))))"
+#lispfun="(defun revlist (x)(if (null (cdr x)) (car x) (list (revlist(cdr x)) (car x))))"
 print "lispfun", lispfun, "\n"
 words = lispfun.split(/\W+/)
 #print "words  ", lispfun.split(/\s([><\,\.\s\(\)]*)/), "\n"
