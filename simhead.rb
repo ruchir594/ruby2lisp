@@ -28,7 +28,7 @@ def squash(a)
     return "#{a[0]} " + "#{squash(a[1..-1])}"
   end
   if a[0] == "cdr"
-    return "#{a[1]}[1]"
+    return "#{a[1]}[1..-1]"
   end
   if a[0] == "car"
     return "#{a[1]}[0]"

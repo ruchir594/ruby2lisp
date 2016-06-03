@@ -1,12 +1,12 @@
-def dfs(x )
-	 if nil == x 
- 	 	 return  nil 
+def dfs(y )
+	 if nil == y 
+ 	 	 return nil 
  	 end 
- 	 if x.length == 1 
- 	 	 return  (cons x nil) 
+ 	 if y.length == 1 
+ 	 	 return y 
  	 end 
- 	 if x.length > 1 
- 	 	 return  (nconc (dfs(car x)) (dfs(cdr x))) 
+ 	 if y.length > 1 
+ 	 	 return [dfs([y[0]])] + dfs([y[1..-1]]) 
  	 end 
  end
  

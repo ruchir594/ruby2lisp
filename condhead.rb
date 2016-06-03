@@ -42,7 +42,7 @@ def ind_cond(a)
   return a1, a2
 end
 
-def beautify(pars)
+def beautify(pars, wars)
   if pars[0] == "null"
     return "nil == #{pars[1]}"
   end
@@ -52,6 +52,37 @@ def beautify(pars)
   if pars[0] == "consp"
     return "#{pars[1]}.length > 1"
   end
+  if pars[0] == "cons"
+    return "#{pars[1]}"
+  end
+  if pars[0] == "car"
+    return "#{pars[1]}[0]"
+  end
+  if pars[0] == "cdr"
+    return "#{pars[1]}[1..-1]"
+  end
+  if pars[1] == "car"
+    return "[#{pars[0]}([#{pars[2]}[0]])]"
+  end
+  if pars[1] == "cdr"
+    return "#{pars[0]}([#{pars[2]}[1..-1]])"
+  end
+  if pars[0] == "nconc"
+    j=extract2(9, wars)
+    lhs = wars[9,j[0]-10]
+    rhs = wars[j[0]..-2]
+    print "\n````` #{lhs} 111111 #{rhs}``````\n"
+    plhs = lhs.split(/\W([><+-^\*\,\.\s]*)/)
+    plhs = plhs.reject { |c| c.empty? }
+    plhs = plhs.reject { |c| c==" "}
+    prhs = rhs.split(/\W([><+-^\*\,\.\s]*)/)
+    prhs = prhs.reject { |c| c.empty? }
+    prhs = prhs.reject { |c| c==" "}
+    lhs = beautify(plhs, lhs)
+    rhs = beautify(prhs, rhs)
+    return "#{lhs} + #{rhs}"
+  end
+  return pars[0]
 end
 
 def simplify2(blk)
@@ -60,8 +91,15 @@ def simplify2(blk)
   pars = pars.reject { |c| c==" "}
   #print "\n``````` #{pars} ``````\n"
   condition_it = "=="
-  pars = beautify(pars)
-  return "\t if #{pars} \n \t \t return #{blk[1]} \n \t end \n"
+  pars = beautify(pars, blk[0])
+
+  qars = blk[1].split(/\W([><+-^\*\,\.\s]*)/)
+  qars = qars.reject { |c| c.empty? }
+  qars = qars.reject { |c| c==" "}
+  #print "\n``````` #{qars} ``````\n"
+  qars = beautify(qars, blk[1])
+
+  return "\t if #{pars} \n \t \t return #{qars} \n \t end \n"
 end
 
 def get_cond_block(bb, ab)
