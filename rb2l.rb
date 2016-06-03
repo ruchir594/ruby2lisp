@@ -56,9 +56,9 @@ def superloop(i, lispfun)
 end
 
 def squash(a)
-  if a.class == "Array" && a.length>2
+  if a.class == [].class && a.length() > 2
     print "\n Too big to squash \n"
-    return a
+    return "#{a[0]} " + squash(a[1..-1])
   end
   if a[0] == "cdr"
     return "#{a[1]}[1]"
@@ -214,3 +214,8 @@ write_words(write_block, aFile)
 
 
 #print "words  ", lispfun.split(/\W([><+-^\*\,\.\s]*)/), "\n"
+
+#print "\n",squash(["cdr", "abs"]),"\n"
+#if ["maxalllll", "1","2"].class == [].class
+#  print "111111111111\n"
+#end
