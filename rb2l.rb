@@ -1,9 +1,9 @@
 print "Enter a valid lisp defun: \n"
 #lispfun=gets()
-lispfun="(defun maxall (x)(if (null (cdr x)) (car x)(if (> (car x) (maxall (cdr x))) (car x) (maxall (cdr x)))))"
+lispfun="(defun maxall (x)(if (null (cdr x)) (car x) (if (> (car x) (maxall (cdr x))) (car x) (maxall (cdr x)))))"
 print "lispfun", lispfun, "\n"
 words = lispfun.split(/\W+/)
-#print "words  ", lispfun.split(/\W+/), "\n"
+#print "words  ", lispfun.split(/\s([><\,\.\s\(\)]*)/), "\n"
 
 aFile = File.new("ruby_is.rb", "w")
 aFile.syswrite("def #{words[2]}")
@@ -41,9 +41,11 @@ def superloop(i, lispfun)
   while i < lispfun.length() do
     if lispfun[i] == '('
       j=extract(i+1,lispfun)
-      parameters = lispfun[i,j-i+1].split(/\W+/)
-      print "\n","parameters",parameters[1..-1]
-      a.push(parameters[1..-1])
+      parameters = lispfun[i,j-i+1].split(/\W([><+-^\*\,\.\s]*)/)
+      parameters = parameters.reject { |c| c.empty? }
+      parameters = parameters.reject { |c| c==" "}
+      print "\n","parameters",parameters
+      a.push(parameters)
     end
     i=i+1
   end
@@ -94,28 +96,70 @@ def squash(a)
   if a == "null"
     return "nil"
   end
+  return a
 end
 
 def get_if_block(build_blocks)
-  condition_len=build_blocks[0].length()
+  block_len=build_blocks[0].length()
+  condition_len=build_blocks[1].length()
   #print "`````````\n",condition_len,"\n````````````"
-  condition_check=build_blocks[1].length()
-  if condition_len - condition_check == 1
-    condition_lh = build_blocks[0][0]
-    condition_rh = build_blocks[1]
-    opr_if=2
-    opr_else=3
+  condition_check=build_blocks[2].length()
+  if build_blocks[1][0] != "* " && build_blocks[1][0] != "> "
+    condition_it="=="
+    lag=0
   else
-    condition_lh = build_blocks[1]
-    condition_rh = build_blocks[2]
-    opr_if=3
-    opr_else=4
+    condition_it = build_blocks[1][0]
+    lag=1
   end
-  print "`````````\n",condition_lh,"\n````````````"
-  print "`````````\n",condition_rh,"\n````````````"
-  return_if_len = build_blocks[opr_if]
-  return_else_len = build_blocks[opr_else]
-  if return_else_len<return_if_len
+    if condition_len - condition_check == 1+lag
+      condition_lh = build_blocks[1][0+lag]
+      condition_lh_len=1
+      condition_rh = build_blocks[2]
+      condition_rh_len=condition_rh.length()
+      opr_if=3+condition_rh_len-2
+      opr_else=4+condition_rh_len-2
+    else
+      condition_lh = build_blocks[2]
+      condition_lh_len=condition_lh.length()
+      condition_rh = build_blocks[3]
+      condition_rh_len=condition_rh.length()
+      opr_if=4+condition_rh_len-2
+      opr_else=5+condition_rh_len-2
+    end
+
+    #print "`````````\n",condition_lh,"\n````````````"
+    #print "`````````\n",condition_rh,"\n````````````"
+    return_if_bl = build_blocks[opr_if]
+    return_else_bl = build_blocks[opr_else]
+    print condition_lh_len + condition_rh_len + return_if_bl.length(), "!!!!!!!", block_len,"!!!!!!!!!"
+    if condition_lh_len + condition_rh_len + return_if_bl.length() == block_len-1
+      #lack of else block
+      print "`````````\n","yaaayyyyyyy","\n````````````"
+      print "`````````\n","yaayyyy","\n````````````"
+      if return_if_bl[0] == "if"
+        return_if_bl=get_if_block(build_blocks[opr_if..-1])
+      end
+      condition_lh = squash(condition_lh)
+      condition_rh = squash(condition_rh)
+      return_if_bl = squash(return_if_bl)
+      return "if #{condition_lh} #{condition_it} #{condition_rh} \n \t #{return_if_bl} \n end \n"
+    else
+      #else block is present
+      print "`````````\n","naaayyyyyyy","\n````````````"
+      print "`````````\n","naayyyy","\n````````````"
+      if return_if_bl[0] == "if"
+        return_if_bl = get_if_block(build_blocks[opr_if..-1])
+      end
+      if return_else_bl[0] == "if"
+        print "`````````\n",return_else_bl,"\n````````````"
+        return_else_bl = get_if_block(build_blocks[opr_else..-1])
+      end
+      condition_lh = squash(condition_lh)
+      condition_rh = squash(condition_rh)
+      return_if_bl = squash(return_if_bl)
+      return_else_bl = squash(return_else_bl)
+      return "if #{condition_lh} #{condition_it} #{condition_rh} \n \t #{return_if_bl} \n else \n \t #{return_else_bl} \n end \n"
+    end
 end
 
 def convert(build_blocks)
@@ -123,7 +167,7 @@ def convert(build_blocks)
   i=0
   #while i<build_blocks.length() do
     if build_blocks[i][0] == "if"
-      write_block.push(get_if_block(build_blocks[1..-1]))
+      write_block.push(get_if_block(build_blocks))
       i=i+1
     end
   #  i=i+1
@@ -144,7 +188,9 @@ while i < lispfun.length() do
     #print i, " ", j, "\n"
     #print lispfun[14], lispfun[15], lispfun[16], "\n"
     #print lispfun[i,j-i+1], "\n"
-    parameters = lispfun[i,j-i+1].split(/\W+/)
+    parameters = lispfun[i,j-i+1].split(/\W([><+-^\*\,\.\s]*)/)
+    parameters = parameters.reject { |c| c.empty? }
+    parameters = parameters.reject { |c| c==" "}
     #print parameters, "\n"
     aFile.syswrite("(")
     write_words(parameters, aFile)
@@ -165,3 +211,6 @@ write_block=convert(build_blocks)
 
 #writing in File
 write_words(write_block, aFile)
+
+
+#print "words  ", lispfun.split(/\W([><+-^\*\,\.\s]*)/), "\n"
