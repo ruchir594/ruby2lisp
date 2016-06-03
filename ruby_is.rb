@@ -1,1 +1,2 @@
-def maxall(x y z )
+def maxall( x )
+ 
