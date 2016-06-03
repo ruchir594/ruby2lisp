@@ -1,11 +1,11 @@
 def dfs(x )
-	 if null == x 
+	 if nil == x 
  	 	 return  nil 
  	 end 
- 	 if atom == x 
+ 	 if x.length == 1 
  	 	 return  (cons x nil) 
  	 end 
- 	 if consp == x 
+ 	 if x.length > 1 
  	 	 return  (nconc (dfs(car x)) (dfs(cdr x))) 
  	 end 
  end

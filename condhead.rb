@@ -42,13 +42,26 @@ def ind_cond(a)
   return a1, a2
 end
 
+def beautify(pars)
+  if pars[0] == "null"
+    return "nil == #{pars[1]}"
+  end
+  if pars[0] == "atom"
+    return "#{pars[1]}.length == 1"
+  end
+  if pars[0] == "consp"
+    return "#{pars[1]}.length > 1"
+  end
+end
+
 def simplify2(blk)
   pars = blk[0].split(/\W([><+-^\*\,\.\s]*)/)
   pars = pars.reject { |c| c.empty? }
   pars = pars.reject { |c| c==" "}
   #print "\n``````` #{pars} ``````\n"
   condition_it = "=="
-  return "\t if #{pars[0]} #{condition_it} #{pars[1]} \n \t \t return #{blk[1]} \n \t end \n"
+  pars = beautify(pars)
+  return "\t if #{pars} \n \t \t return #{blk[1]} \n \t end \n"
 end
 
 def get_cond_block(bb, ab)
