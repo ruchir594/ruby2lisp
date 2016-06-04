@@ -1,0 +1,28 @@
+PROJECT BY: RUCHIR PATEL. F002BZ1
+
+Task: Convert a "defun lisp" into "def ruby". 
+
+Description: Run a ruby.rb file, input a valid "defun lisp" function, (lexically binded), and file will output the corresponding ruby function which takes the same amount of parameters and does the same thing as lisp function. 
+
+Language: ruby
+
+Partners: none. Would prefer to work alone on this project. 
+
+Test Cases: Following are some of the test cases for your help. 
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+(defun revlist (x)(if (null (cdr x)) (car x) (list (revlist(cdr x)) (car x))))
+
+(defun revlist_f (y)(if (null (car y)) (cdr y) (list (revlist_f(car y)) (cdr y))))
+
+(defun dfs (y) (cond ((null y) nil);((atom y) (cons y nil));((consp y) (nconc (dfs(car y)) (dfs(cdr y))))))
+
+(define fun_name (x1, y2, z3)(if (null (car x1)) (cdr z3)))
+
+(defun rlen (x)(cond ((null x) 0);((atom x) 0);((consp x) (+ 1 (rlen (cdr x)))))))
+
+(define fun_name ())
+
+(defun maxall (x)(if (null (cdr x)) (car x) (if (> (car x) (maxall (cdr x))) (car x) (maxall (cdr x)))))

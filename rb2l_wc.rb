@@ -4,8 +4,8 @@ lispfun=gets()
 
 print "\n\nlispfun entered: ", lispfun, "\n"
 words = lispfun.split(/\W+/)
-require './rb2l_header.rb'
-require './simhead.rb'
+require './rb2l_header_wc.rb'
+require './simhead_wc.rb'
 flag=false
 flag=check_validity(lispfun)
 if flag == false
