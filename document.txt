@@ -5,3 +5,7 @@
 (defun dfs (y) (cond ((null y) nil);((atom y) (cons y nil));((consp y) (nconc (dfs(car y)) (dfs(cdr y))))))
 
 (define fun_name (x1, y2, z3)(if (null (car x1)) (cdr z3)))
+
+(defun rlen (x)(cond ((null x) 0);((atom x) 0);((consp x) (+ 1 (rlen (cdr x)))))))
+
+(define fun_name ())

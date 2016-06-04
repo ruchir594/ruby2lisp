@@ -43,6 +43,7 @@ def ind_cond(a)
 end
 ###############################################################################
 def beautify(pars, wars)
+  #print "\n\t #{pars} \t #{wars}"
   if pars[0] == "null"
     return "nil == #{pars[1]}"
   end

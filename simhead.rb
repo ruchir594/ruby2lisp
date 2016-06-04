@@ -203,21 +203,23 @@ def consume(build_blocks, all_blocks)
   krieg=[]
   i=0
   kk=[]
+  #flag=false
   while i<build_blocks.length
     kk[1]=1
     if build_blocks[i][0] == "if"
       kk = get_if_blk(build_blocks, all_blocks)
       #print "\n #{kk} \n #{count}"
       krieg.push(kk[0])
-      krieg.push("end\n")
+
     end
     if build_blocks[i][0] == "cond"
       print "\n in the cond block"
       kk = get_cond_block(build_blocks, all_blocks)
       krieg.concat kk[0]
-      krieg.push("end\n")
+      #krieg.push("end\n")
     end
     i=i+kk[1]
   end
+  krieg.push("end\n")
   return krieg
 end
