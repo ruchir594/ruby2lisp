@@ -1,4 +1,8 @@
 def check_validity(a)
+  # it is a simple function which only count the number of brackets
+  # '('    ')' and tells if it is approproate or not
+  # yes it will not work in most of the general cases, but if you try
+  # to add a valid lisp defun but miss one or two brackets then this will help
   i=0
   cnt=0
   while i < a.length
@@ -20,6 +24,7 @@ end
 
 
 def extract(i, lispfun)
+  # Extract function essentiialy helps get the words between two brackets '('  ')'
   j=i
   count=1
   #print lispfun[j]

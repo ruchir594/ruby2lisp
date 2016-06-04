@@ -39,6 +39,7 @@ def squash(a)
   return a
 end
 ###############################################################################
+# squash2 works the same as beautify in "condhead_wc.rb"
 def squash2(a)
   #print "\n``````````` #{a} `````````\n"
   if a[0] == "car"
@@ -80,6 +81,8 @@ def l_of(a)
   return b
 end
 ###############################################################################
+# sometimes there are complicated blocks which needs simplification before squashing
+
 def simplify(bb, ab)
   i=1
   opr=[]
