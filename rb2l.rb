@@ -1,8 +1,9 @@
 print "Enter a valid lisp defun: \n"
 #lispfun=gets()
-#lispfun="(defun maxall (x)(if (null (cdr x)) (car x) (if (> (car x) (maxall (cdr x))) (car x) (maxall (cdr x)))))"
-#lispfun="(defun revlist (x)(if (null (cdr x)) (car x) (list (revlist(cdr x)) (car x))))"
-lispfun="(defun dfs (y) (cond ((null y) nil);((atom y) (cons y nil));((consp y) (nconc (dfs(car y)) (dfs(cdr y))))))"
+lispfun="(defun maxall (x)(if (null (cdr x)) (car x) (if (> (car x) (maxall (cdr x))) (car x) (maxall (cdr x)))))"
+lispfun="(defun revlist (x)(if (null (cdr x)) (car x) (list (revlist(cdr x)) (car x))))"
+#lispfun="(defun dfs (y) (cond ((null y) nil);((atom y) (cons y nil));((consp y) (nconc (dfs(car y)) (dfs(cdr y))))))"
+lispfun="(define fun_name (x1, y2, z3)(if (null (car x1)) (cdr z3)))"
 print "lispfun", lispfun, "\n"
 words = lispfun.split(/\W+/)
 #print "words  ", lispfun.split(/\s([><\,\.\s\(\)]*)/), "\n"

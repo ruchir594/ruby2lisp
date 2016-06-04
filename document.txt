@@ -1,0 +1,7 @@
+(defun revlist (x)(if (null (cdr x)) (car x) (list (revlist(cdr x)) (car x))))
+
+(defun revlist (x)(if (null (cdr x)) (car x) (list (revlist(cdr x)) (car x))))
+
+(defun dfs (y) (cond ((null y) nil);((atom y) (cons y nil));((consp y) (nconc (dfs(car y)) (dfs(cdr y))))))
+
+(define fun_name (x1, y2, z3)(if (null (car x1)) (cdr z3)))

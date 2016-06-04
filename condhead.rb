@@ -18,7 +18,7 @@ def extract2(i, lispfun)
   end
   return j, cmax
 end
-
+###############################################################################
 def get_all_cond(bb, ab)
   i=1
   a=[]
@@ -34,14 +34,14 @@ def get_all_cond(bb, ab)
   end
   return a
 end
-
+###############################################################################
 def ind_cond(a)
   j = extract2(2,a)
   a1 = a[2, j[0]-3]
   a2 = a[j[0]..-2]
   return a1, a2
 end
-
+###############################################################################
 def beautify(pars, wars)
   if pars[0] == "null"
     return "nil == #{pars[1]}"
@@ -84,7 +84,7 @@ def beautify(pars, wars)
   end
   return pars[0]
 end
-
+###############################################################################
 def simplify2(blk)
   pars = blk[0].split(/\W([><+-^\*\,\.\s]*)/)
   pars = pars.reject { |c| c.empty? }
@@ -101,7 +101,7 @@ def simplify2(blk)
 
   return "\t if #{pars} \n \t \t return #{qars} \n \t end \n"
 end
-
+###############################################################################
 def get_cond_block(bb, ab)
   gg = get_all_cond(bb, ab)
   #print gg, "\n"
