@@ -24,7 +24,7 @@ end
 ###############################################################################
 def squash(a)
   if a.class == [].class && a.length() > 2
-    print "\n Too big to squash directly \n"
+    #print "\n Too big to squash directly \n"
     return "#{a[0]} " + "#{squash(a[1..-1])}"
   end
   if a[0] == "cdr"
@@ -40,7 +40,7 @@ def squash(a)
 end
 ###############################################################################
 def squash2(a)
-  print "\n``````````` #{a} `````````\n"
+  #print "\n``````````` #{a} `````````\n"
   if a[0] == "car"
     return "#{a[1]}[0]"
   end
@@ -199,7 +199,7 @@ end
 
 ###############################################################################
 def consume(build_blocks, all_blocks)
-  print "\n in consume \n"
+  #print "\n in consume \n"
   krieg=[]
   i=0
   kk=[]
@@ -213,7 +213,7 @@ def consume(build_blocks, all_blocks)
 
     end
     if build_blocks[i][0] == "cond"
-      print "\n in the cond block"
+      #print "\n in the cond block"
       kk = get_cond_block(build_blocks, all_blocks)
       krieg.concat kk[0]
       #krieg.push("end\n")

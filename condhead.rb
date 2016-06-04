@@ -72,7 +72,7 @@ def beautify(pars, wars)
     j=extract2(9, wars)
     lhs = wars[9,j[0]-10]
     rhs = wars[j[0]..-2]
-    print "\n````` #{lhs} 111111 #{rhs}``````\n"
+    #print "\n````` #{lhs} 111111 #{rhs}``````\n"
     plhs = lhs.split(/\W([><+-^\*\,\.\s]*)/)
     plhs = plhs.reject { |c| c.empty? }
     plhs = plhs.reject { |c| c==" "}

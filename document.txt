@@ -9,3 +9,5 @@
 (defun rlen (x)(cond ((null x) 0);((atom x) 0);((consp x) (+ 1 (rlen (cdr x)))))))
 
 (define fun_name ())
+
+(defun maxall (x)(if (null (cdr x)) (car x) (if (> (car x) (maxall (cdr x))) (car x) (maxall (cdr x)))))

@@ -1,22 +1,28 @@
+print "\n \t ~~~~~~~ Project by Ruchir Patel: F002BZ1 ~~~~~~~ \n\n"
 print "Enter a valid lisp defun: \n"
-#lispfun=gets()
-lispfun="(defun maxall (x)(if (null (cdr x)) (car x) (if (> (car x) (maxall (cdr x))) (car x) (maxall (cdr x)))))"
-lispfun="(defun revlist (x)(if (null (cdr x)) (car x) (list (revlist(cdr x)) (car x))))"
+lispfun=gets()
+#lispfun="(defun maxall (x)(if (null (cdr x)) (car x) (if (> (car x) (maxall (cdr x))) (car x) (maxall (cdr x)))))"
+#lispfun="(defun revlist (x)(if (null (cdr x)) (car x) (list (revlist(cdr x)) (car x))))"
 #lispfun="(defun dfs (y) (cond ((null y) nil);((atom y) (cons y nil));((consp y) (nconc (dfs(car y)) (dfs(cdr y))))))"
-lispfun="(define fun_name (x1, y2, z3)(if (null (car x1)) (cdr z3)))"
-lispfun="(defun rlen (x)(cond ((null x) 0);((atom x) 0);((consp x) (+ 1 (rlen (cdr x)))))))"
-lispfun="(define fun_name ())"
-print "lispfun", lispfun, "\n"
+#lispfun="(define fun_name (x1, y2, z3)(if (null (car x1)) (cdr z3)))"
+#lispfun="(defun rlen (x)(cond ((null x) 0);((atom x) 0);((consp x) (+ 1 (rlen (cdr x)))))))"
+#lispfun="(define fun_name ())"
+print "\n\nlispfun entered: ", lispfun, "\n"
 words = lispfun.split(/\W+/)
 #print "words  ", lispfun.split(/\s([><\,\.\s\(\)]*)/), "\n"
+require './rb2l_header.rb'
+require './simhead.rb'
+flag=false
+flag=check_validity(lispfun)
+if flag == false
+  print "\n\n ~~~~~ Invalid function. Please try again ~~ \n\n"
+  return
+end
 
 aFile = File.new("ruby_is.rb", "w")
 aFile.syswrite("def #{words[2]}")
 i=0
 count=0
-
-require './rb2l_header.rb'
-require './simhead.rb'
 
 #Putting down parameters into the function name is what this while loop is for.
 
@@ -68,3 +74,6 @@ write_words(feel_block, aFile)
 #if ["maxalllll", "1","2"].class == [].class
 #  print "111111111111\n"
 #end
+
+print "\n\n~~~~~~ A new file named 'ruby_is.rb' is created"
+print " \n in the current directory which has translated \n entered lisp ----> ruby function ~~~~~~~\n\n"

@@ -1,3 +1,24 @@
+def check_validity(a)
+  i=0
+  cnt=0
+  while i < a.length
+    if a[i] == '('
+      cnt=cnt+1
+    end
+    if a[i] == ')'
+      cnt=cnt-1
+    end
+    i=i+1
+  end
+  if cnt != 0
+    return false
+  end
+  return true
+end
+###############################################################################
+
+
+
 def extract(i, lispfun)
   j=i
   count=1
@@ -14,7 +35,7 @@ def extract(i, lispfun)
   end
   return j
 end
-
+###############################################################################
 def write_words(parameters, aFile)
   i=0
   while i < parameters.length() do
@@ -23,7 +44,7 @@ def write_words(parameters, aFile)
     i=i+1
   end
 end
-
+###############################################################################
 def superloop(i, lispfun)
   a=[]
   while i < lispfun.length() do
@@ -32,37 +53,37 @@ def superloop(i, lispfun)
       parameters = lispfun[i,j-i+1].split(/\W([><+-^\*\,\.\s]*)/)
       parameters = parameters.reject { |c| c.empty? }
       parameters = parameters.reject { |c| c==" "}
-      print "\n","parameters",parameters
+      #print "\n","parameters",parameters
       a.push(parameters)
     end
     i=i+1
   end
-  print "\n"
+  #print "\n"
   #print a
-  print "\n"
+  #print "\n"
   return a
 end
-
+###############################################################################
 def hyperloop(i, lispfun)
   a=[]
   while i < lispfun.length() do
     if lispfun[i] == '('
       j=extract(i+1,lispfun)
       parameters = lispfun[i,j-i]
-      print "\n","parameters",parameters
+      #print "\n","parameters",parameters
       a.push(parameters)
     end
     i=i+1
   end
-  print "\n"
+  #print "\n"
   #print a
-  print "\n"
+  #print "\n"
   return a
 end
-
+###############################################################################
 def squash(a)
   if a.class == [].class && a.length() > 2
-    print "\n Too big to squash \n"
+    #print "\n Too big to squash \n"
     return "#{a[0]} " + squash(a[1..-1])
   end
   if a[0] == "cdr"
@@ -103,7 +124,7 @@ def squash(a)
   end
   return a
 end
-
+###############################################################################
 def get_if_block(build_blocks)
   block_len=build_blocks[0].length()
   condition_len=build_blocks[1].length()
@@ -166,7 +187,7 @@ def get_if_block(build_blocks)
       return "if #{condition_lh} #{condition_it} #{condition_rh} \n \t #{return_if_bl} \n else \n \t #{return_else_bl} \n end \n"
     end
 end
-
+###############################################################################
 def convert(build_blocks)
   write_block=[]
   i=0
