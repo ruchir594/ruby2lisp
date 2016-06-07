@@ -47,20 +47,22 @@ end
 ###############################################################################
 def superloop(i, lispfun)
   a=[]
+  print "\n\n \t building blocks of the body of the function which will be"
+  print "\n\t used to construct the ruby function \n\n"
   while i < lispfun.length() do
     if lispfun[i] == '('
       j=extract(i+1,lispfun)
       parameters = lispfun[i,j-i+1].split(/\W([><+-^\*\,\.\s]*)/)
       parameters = parameters.reject { |c| c.empty? }
       parameters = parameters.reject { |c| c==" "}
-      #print "\n","parameters",parameters
+      print "\n","parameters_1",parameters
       a.push(parameters)
     end
     i=i+1
   end
-  #print "\n"
+  print "\n"
   #print a
-  #print "\n"
+  print "\n"
   return a
 end
 ###############################################################################
@@ -70,7 +72,7 @@ def hyperloop(i, lispfun)
     if lispfun[i] == '('
       j=extract(i+1,lispfun)
       parameters = lispfun[i,j-i]
-      #print "\n","parameters",parameters
+      print "\n","parameters_2",parameters
       a.push(parameters)
     end
     i=i+1

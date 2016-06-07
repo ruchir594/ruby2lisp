@@ -1,8 +1,13 @@
-def revlist(y )
-if nil == y[1..-1] 
- 	 return y[0] 
+def maxall(x )
+if [] == x[1..-1] 
+ 	 return x[0] 
  else 
- 	 [revlist(y[1..-1])].concat([y[0]]) 
+ 	 if x[0] >  maxall(x[1..-1]) 
+ 	 return x[0] 
+ else 
+ 	 maxall(x[1..-1]) 
+ end 
+ 
  end 
  end
  
