@@ -57,12 +57,15 @@ def squash2(a)
     a=a[1..-1]
     i=0
     gg=""
-    while i < a.length
-      g = squash2(a[i])
-      gg="[#{gg}] + [#{g}]"
-      i=i+1
-    end
-    gg=gg[3..-1]
+    #while i < a.length
+    #  g = squash2(a[i])
+    #  gg="#{gg}.concat ( [#{g}] )"
+    #  i=i+1
+    #end
+    #gg=gg[3..-1]
+    k1=squash2(a[0])
+    k2=squash2(a[1])
+    gg = "[#{k1}].concat([#{k2}])"
     return gg
   end
   return "#{a[0]} #{a[1]}"

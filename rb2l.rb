@@ -1,7 +1,7 @@
 print "\n \t ~~~~~~~ Project by Ruchir Patel: F002BZ1 ~~~~~~~ \n\n"
 print "Enter a valid lisp defun: \n"
+#lispfun="(defun revlist (y)(if (null (cdr y)) (car y) (list (revlist(cdr y)) (car y))))"
 lispfun=gets()
-
 print "\n\nlispfun entered: ", lispfun, "\n"
 words = lispfun.split(/\W+/)
 require './rb2l_header.rb'
