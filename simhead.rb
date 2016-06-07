@@ -59,7 +59,7 @@ def squash2(a)
     gg=""
     while i < a.length
       g = squash2(a[i])
-      gg="#{gg} + #{g}"
+      gg="[#{gg}] + [#{g}]"
       i=i+1
     end
     gg=gg[3..-1]
