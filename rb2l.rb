@@ -1,8 +1,8 @@
 print "\n \t ~~~~~~~ Project by Ruchir Patel: F002BZ1 ~~~~~~~ \n\n"
 print "Enter a valid lisp defun: \n"
 #lispfun="(defun revlist (y)(if (null (cdr y)) (car y) (list (revlist(cdr y)) (car y))))"
-lispfun="(defun rlen (x)(cond ((null x) 0);((atom x) 0);((consp x) (+ 1 (rlen (cdr x))))))"
-#lispfun=gets()
+#lispfun="(defun rlen (x)(cond ((null x) 0);((atom x) 0);((consp x) (+ 1 (rlen (cdr x))))))"
+lispfun=gets()
 print "\n\nlispfun entered: ", lispfun, "\n"
 words = lispfun.split(/\W+/)
 require './rb2l_header.rb'
