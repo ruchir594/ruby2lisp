@@ -21,8 +21,10 @@ Test Cases: Following are some of the test cases for your help.
 
 (define fun_name (x1, y2, z3)(if (null (car x1)) (cdr z3)))
 
-(defun rlen (x)(cond ((null x) 0);((atom x) 0);((consp x) (+ 1 (rlen (cdr x)))))))
+(defun rlen (x)(cond ((null x) 0);((atom x) 0);((consp x) (+ 1 (rlen (cdr x))))))
 
 (define fun_name ())
 
 (defun maxall (x)(if (null (cdr x)) (car x) (if (> (car x) (maxall (cdr x))) (car x) (maxall (cdr x)))))
+
+(defun rlen (x)(cond ((null x) 0);((atom x) 0);((consp x) (+ 1 (rlen (cdr x))))))

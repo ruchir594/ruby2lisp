@@ -129,7 +129,7 @@ def get_if_blk(build_blocks, all_blocks)
   condition_len=build_blocks[1].length()
   #print "`````````\n",condition_len,"\n````````````"
   condition_check=build_blocks[2].length()
-  if build_blocks[1][0] != "* " && build_blocks[1][0] != "> "
+  if build_blocks[1][0] != "* " && build_blocks[1][0] != "> " && build_blocks[1][0] != "+ " && build_blocks[1][0] != "- " && build_blocks[1][0] != "* "
     condition_it="=="
     lag=0
   else
