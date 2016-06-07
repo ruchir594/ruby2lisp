@@ -68,7 +68,11 @@ def squash2(a)
     gg = "[#{k1}].concat([#{k2}])"
     return gg
   end
-  return "#{a[0]} #{a[1]}"
+  if a == "null"
+    return "nil"
+  end
+  #return "#{a[0]} #{a[1]}"
+  return a
 end
 ###############################################################################
 def l_of(a)
@@ -138,15 +142,19 @@ def get_if_blk(build_blocks, all_blocks)
   end
     if condition_len - condition_check == 1+lag
       condition_lh = build_blocks[1][0+lag]
+      condition_lh_ab = all_blocks[1][0+lag]
       condition_lh_len=1
       condition_rh = build_blocks[2]
+      condition_rh_ab = all_blocks[2]
       condition_rh_len=condition_rh.length()
       opr_if=3+condition_rh_len-2
       opr_else=4+condition_rh_len-2
     else
       condition_lh = build_blocks[2]
+      condition_lh_ab = all_blocks[2]
       condition_lh_len=condition_lh.length()
       condition_rh = build_blocks[3]
+      condition_rh_ab = all_blocks[3]
       condition_rh_len=condition_rh.length()
       opr_if=4+condition_rh_len-2
       opr_else=5+condition_rh_len-2
@@ -160,9 +168,12 @@ def get_if_blk(build_blocks, all_blocks)
       if return_if_bl[0][0] == "if"
         return_if_bl=get_if_blk(build_blocks[opr_if..-1], all_blocks[opr_if..-1])
       end
-      condition_lh = squash(condition_lh)
-      condition_rh = squash(condition_rh)
-      return_if_bl = simplify(return_if_bl, all_blocks[opr_if])
+      #condition_lh = squash2(condition_lh)
+      #condition_rh = squash2(condition_rh)
+      condition_lh = beautify(condition_lh, condition_lh_ab)
+      condition_rh = beautify(condition_rh, condition_rh_ab)
+      #return_if_bl = simplify(return_if_bl, all_blocks[opr_if])
+      return_if_bl = beautify(return_if_bl[0], all_blocks[opr_if])
       #print "if #{condition_lh} #{condition_it} #{condition_rh} \n \t #{return_if_bl} \n end \n"
       cc = cc + opr_if + 1
       return "if #{condition_lh} #{condition_it} #{condition_rh} \n \t return #{return_if_bl} \n end \n", cc
@@ -181,19 +192,28 @@ def get_if_blk(build_blocks, all_blocks)
         return_else_bl=return_else_bl[0]
         flag_else_crunch=true
       end
-      condition_lh = squash(condition_lh)
-      condition_rh = squash(condition_rh)
+      #condition_lh = squash2(condition_lh)
+      #condition_rh = squash2(condition_rh)
+      condition_lh = beautify(condition_lh, condition_lh_ab)
+      condition_rh = beautify(condition_rh, condition_rh_ab)
       if flag_if_crunch == false
-        return_if_bl = simplify(return_if_bl, all_blocks[opr_if])
+        #return_if_bl = simplify(return_if_bl, all_blocks[opr_if])
+        return_if_bl = beautify(return_if_bl[0], all_blocks[opr_if])
       else
-        return_if_bl = squash(return_if_bl)
+        return_if_bl = squash2(return_if_bl)
+        #return_if_bl = beautify(return_if_bl, all_blocks[opr_if])
       end
       if flag_else_crunch == false
-        return_else_bl = simplify(return_else_bl, all_blocks[opr_else])
+        #return_else_bl = simplify(return_else_bl, all_blocks[opr_else])
+        return_else_bl = beautify(return_else_bl[0], all_blocks[opr_else])
       else
-        return_else_bl = squash(return_else_bl)
+        return_else_bl = squash2(return_else_bl)
+        #return_else_bl = beautify(return_else_bl)
       end
       cc = cc + opr_else + 1
+      if condition_rh == "x[1..-1]" and condition_lh == "nil"
+        condition_lh = "[]"
+      end
       return "if #{condition_lh} #{condition_it} #{condition_rh} \n \t return #{return_if_bl} \n else \n \t #{return_else_bl} \n end \n", cc
     end
 end

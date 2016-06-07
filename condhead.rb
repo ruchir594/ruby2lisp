@@ -49,6 +49,9 @@ end
 ###############################################################################
 def beautify(pars, wars)
   print "\n\t #{pars} \t #{wars}"
+  if pars == "null"
+    return "nil"
+  end
   if pars[0] == "null"
     return "nil == #{pars[1]}"
   end
@@ -72,6 +75,34 @@ def beautify(pars, wars)
   end
   if pars[1] == "cdr"
     return "#{pars[0]}(#{pars[2]}[1..-1])"
+  end
+  if pars[0] == "list"
+    #pars=pars[1..-1]
+    i=0
+    gg=""
+    i=6
+    j=extract2(i+1, wars)
+    lhs=wars[i, j[0]-i+1]
+    rhs=wars[j[0]..-2]
+    plhs = lhs.split(/\W([><+-^\*\,\.\s]*)/)
+    plhs = plhs.reject { |c| c.empty? }
+    plhs = plhs.reject { |c| c==" "}
+    prhs = rhs.split(/\W([><+-^\*\,\.\s]*)/)
+    prhs = prhs.reject { |c| c.empty? }
+    prhs = prhs.reject { |c| c==" "}
+    lhs = beautify(plhs, lhs)
+    rhs = beautify(prhs, rhs)
+    #print "\n\n @@@@@ #{k1} $ #{k2} \n"
+    #while i < a.length
+    #  g = squash2(a[i])
+    #  gg="#{gg}.concat ( [#{g}] )"
+    #  i=i+1
+    #end
+    #gg=gg[3..-1]
+    #k1=beautify(pars[0])
+    #k2=beautify(pars[1])
+    gg = "[#{lhs}].concat([#{rhs}])"
+    return gg
   end
   if pars[0] == "nconc"
     j=extract2(9, wars)

@@ -2,6 +2,7 @@ print "\n \t ~~~~~~~ Project by Ruchir Patel: F002BZ1 ~~~~~~~ \n\n"
 print "Enter a valid lisp defun: \n"
 #lispfun="(defun revlist (y)(if (null (cdr y)) (car y) (list (revlist(cdr y)) (car y))))"
 #lispfun="(defun rlen (x)(cond ((null x) 0);((atom x) 0);((consp x) (+ 1 (rlen (cdr x))))))"
+#lispfun="(defun maxall (x)(if (null (cdr x)) (car x) (if (> (car x) (maxall (cdr x))) (car x) (maxall (cdr x)))))"
 lispfun=gets()
 print "\n\nlispfun entered: ", lispfun, "\n"
 words = lispfun.split(/\W+/)
